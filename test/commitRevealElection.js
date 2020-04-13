@@ -3,7 +3,6 @@ const CommitRevealElection = artifacts.require("CommitRevealElection");
 const getCurrentTime = require('./utils/time').getCurrentTime;
 const assertRevert = require('./utils/assertRevert').assertRevert;
 const increaseTime = require('./utils/increaseTime').increaseTime;
-//const { soliditySha3 } = require("web3-utils");
 
 
 contract('CommitRevealElection', (accounts) => {
