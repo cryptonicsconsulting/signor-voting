@@ -25,7 +25,7 @@ contract('DelegatedElection', (accounts) => {
 
         it('no voting before election starts', async function() {
             
-        });
+        }); 
 
         it('voting', async function() {
             //time travel to election end
