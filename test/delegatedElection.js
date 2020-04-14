@@ -28,7 +28,7 @@ contract('DelegatedElection', (accounts) => {
             
             //prepare signature
             let message = await web3.utils.soliditySha3(web3.eth.abi.encodeParameters(["bytes32", "address"], [web3.utils.fromAscii("Candidate_1"),this.election.address]));
-            let signature = await web3.eth.sign(message, accounts[0]);
+            let signature = await web3.eth.sign(message, accounts[1]);
             let r = signature.slice(0, 66);
             let s = "0x" + signature.slice(66, 130);
             let v = "0x" + signature.slice(130, 132);
