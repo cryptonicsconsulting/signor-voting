@@ -87,7 +87,6 @@ contract Election is Ownable {
 
 
     function getVotes(bytes32 _candidate) public view returns(uint) {
-        require(isCandidate(_candidate), "not a valid candidate");
         return voteCount[_candidate];
     }
 }
