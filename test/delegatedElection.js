@@ -11,17 +11,13 @@ contract('DelegatedElection', (accounts) => {
 
 
     beforeEach(async function() {
-        
-    
+
         let start = await getCurrentTime()+3600;
         let end = start + 3600;
         
         this.election = await DelegatedElection.new(start, end, 3600, accounts);
         await this.election.addCandidate(web3.utils.fromAscii("Candidate_1"));
-        await this.election.addCandidate(web3.utils.fromAscii("Candidate_2"));
-
-       
-       
+        await this.election.addCandidate(web3.utils.fromAscii("Candidate_2")); 
     });
   
   
@@ -30,15 +26,16 @@ contract('DelegatedElection', (accounts) => {
             //time travel to election start
             await increaseTime(3700);
             
-             //prepare signature
-             let message = await web3.utils.soliditySha3(web3.eth.abi.encodeParameters(["bytes32", "address"], [web3.utils.fromAscii("Candidate_1"),this.election.address]));
-             let signature = await web3.eth.sign(message, accounts[0]);
-             let r = signature.slice(0, 66);
-             let s = "0x" + signature.slice(66, 130);
-             let v = "0x" + signature.slice(130, 132);
-             v = web3.utils.toDecimal(v);
-             //fix v for proper Ethereum signartures --> ganache-cli bug
-             v = v + 27;
+            //prepare signature
+            let message = await web3.utils.soliditySha3(web3.eth.abi.encodeParameters(["bytes32", "address"], [web3.utils.fromAscii("Candidate_1"),this.election.address]));
+            let signature = await web3.eth.sign(message, accounts[0]);
+            let r = signature.slice(0, 66);
+            let s = "0x" + signature.slice(66, 130);
+            let v = "0x" + signature.slice(130, 132);
+            v = web3.utils.toDecimal(v);
+            //fix v for proper Ethereum signartures --> ganache-cli bug
+            if (v==0 || v==1) v = v + 27;
+
             await assertRevert(this.election.submitVote(web3.utils.fromAscii("Candidate_1"), r, s, v), "Vote submission before election end");
             
         }); 
@@ -55,7 +52,7 @@ contract('DelegatedElection', (accounts) => {
             let v = "0x" + signature.slice(130, 132);
             v = web3.utils.toDecimal(v);
             //fix v for proper Ethereum signartures --> ganache-cli bug
-            v = v + 27;
+            if (v==0 || v==1) v = v + 27;
 
             await this.election.submitVote(web3.utils.fromAscii("Candidate_1"), r, s, v);
             const votes = await this.election.getVotes(web3.utils.fromAscii("Candidate_1"));
@@ -75,7 +72,7 @@ contract('DelegatedElection', (accounts) => {
             let v = "0x" + signature.slice(130, 132);
             v = web3.utils.toDecimal(v);
             //fix v for proper Ethereum signartures --> ganache-cli bug
-            v = v + 27;
+            if (v==0 || v==1) v = v + 27;
 
             await this.election.submitVote(web3.utils.fromAscii("Candidate_1"), r, s, v);
             const votes = await this.election.getVotes(web3.utils.fromAscii("Candidate_1"));
@@ -94,7 +91,7 @@ contract('DelegatedElection', (accounts) => {
             let v = "0x" + signature.slice(130, 132);
             v = web3.utils.toDecimal(v);
             //fix v for proper Ethereum signartures --> ganache-cli bug
-            v = v + 27;
+            if (v==0 || v==1) v = v + 27;
    
             await this.election.submitVote(web3.utils.fromAscii("Candidate_1"), r, s, v);
             await this.election.submitVote(web3.utils.fromAscii("Candidate_1"), r, s, v);
@@ -114,7 +111,7 @@ contract('DelegatedElection', (accounts) => {
             let v = "0x" + signature.slice(130, 132);
             v = web3.utils.toDecimal(v);
             //fix v for proper Ethereum signartures --> ganache-cli bug
-            v = v + 27;
+            if (v==0 || v==1) v = v + 27;
             
             //the vote will go through but should not be counted 
             await this.election.submitVote(web3.utils.fromAscii("Candidate_3"), r, s, v);
