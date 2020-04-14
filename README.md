@@ -82,7 +82,7 @@ function revealVote(bytes32 _candidate, bytes32 _salt) public onlyVoter;
 The following JavaScript web3.js example illustrates how to calculate the hash on the client side (assumes a contract object called `election`):
 
 ```javascript
-const data = web3.eth.abi.encodeParameters(["bytes32", "bytes32"]		[web3.utils.fromAscii("Candidate_1"),web3.utils.fromAscii("mySalt")]);
+const data = web3.eth.abi.encodeParameters(["bytes32", "bytes32"],[web3.utils.fromAscii("Candidate_1"),web3.utils.fromAscii("mySalt")]);
 const candidate1Hash = await web3.utils.soliditySha3(data);
 
 //submit vote
